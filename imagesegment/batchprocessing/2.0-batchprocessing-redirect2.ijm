@@ -10,9 +10,6 @@ suffix = ".tif";
 // Initiates batch mode processing; check that there is a set to false at end
 setBatchMode(true);
 
-// Declare a counter variable for the FOV
-FOVid=2; 
-
 processFolder(input);
 
 // Processes through the input folder and identifies whether item is a file or folder
@@ -27,16 +24,9 @@ function processFolder(input) {
 		if(endsWith(list[i], suffix)) { // checks if .tif suffix is present, suffix means is file not subdirectory 
 			open(input + list[i]);
 			titleOrig=File.nameWithoutExtension;
-			print(titleOrig);
 			idOrig=getImageID();
-			print(idOrig);
-			// selectImage(idOrig);
 			nameOrig=File.name;
-			// print(nameOrig);
 			processFile(input, output, list[i]);	
-			
-			// Iterate to next FOVid; set to 3 now due to testing
-			// FOVid++;
 		}
 	}
 }
@@ -66,17 +56,11 @@ function processFile(input, output, file) {
 		// User input for parameter 1 with Bernsen method
 		BernsenParam1(); 
 		
-		run("Watershed"); 
-		print(nameOrig);
-		// a="["+nameOrig+"]";
-		// print(a); 
-		run("Set Measurements...", "area mean min integrated median display redirect=[" + nameOrig + "] decimal=3"); // try a FOVid combination
-		print(titleOrig); // titleOrig instead?
+		run("Watershed");  
+		run("Set Measurements...", "area mean min integrated median display redirect=[" + nameOrig + "] decimal=3"); 
 		run("Analyze Particles...", "size=0.50-Infinity display include summarize");
 
-		// pseudo-coloring images
-		// OrangeLUT();
-		// PurpleLUT();
+		// Pseudo-coloring images
 		if(j==1) {
 			function PurpleLUT() {
 				red = newArray(256);
@@ -94,7 +78,6 @@ function processFile(input, output, file) {
 				setLut(red, green, blue);
 			}
 			PurpleLUT();
-			// run("Purple");
 		}
 		if(j==2) {
 			run("Blue");
@@ -109,7 +92,6 @@ function processFile(input, output, file) {
 			run("Yellow");
 		}
 		if(j==6) {
-			// Defines new LUT colors (orange, purple)
 			function OrangeLUT() {
 				red=newArray(256);
 				green=newArray(256);
@@ -126,7 +108,6 @@ function processFile(input, output, file) {
 				setLut(red, green, blue);
 			}
 			OrangeLUT();
-			// run("Orange");
 		}
 		if(j==7) {
 			run("Red");
