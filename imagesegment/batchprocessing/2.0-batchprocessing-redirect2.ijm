@@ -1,4 +1,5 @@
-// Title: 2.0-batchprocessing-redirect2.ijm
+// Title: 2.0-batchprocessing-redirect2.ijm 
+// Stored at https://github.com/sophiaswartz020/borisy-summer-2020/blob/master/imagesegment/batchprocessing/2.0-batchprocessing-redirect2.ijm
 
 // Asks user to choose input and output folders 
 input = getDirectory("Input directory");
@@ -45,9 +46,11 @@ function processFile(input, output, file) {
 			
 		//run("Brightness/Contrast...");
 		resetMinAndMax(); 
+		//wait(100);
 			
 		// Run a Median filter on duplicated image
 		run("Median...", "radius=3"); 
+		//wait(100);
 		setOption("ScaleConversions", true); //not sure what this step is doing
 		
 		// Convert duplicated image to 8-bit
@@ -55,8 +58,10 @@ function processFile(input, output, file) {
 		
 		// User input for parameter 1 with Bernsen method
 		BernsenParam1(); 
+		//wait(100);
 		
 		run("Watershed");  
+		//wait(100);
 		run("Set Measurements...", "area mean min integrated median display redirect=[" + nameOrig + "] decimal=3"); 
 		run("Analyze Particles...", "size=0.50-Infinity display include summarize");
 
@@ -155,8 +160,8 @@ function processFile(input, output, file) {
 		close("summary-" + titleOrig + "dup-Ch" + j + ".csv");
 		saveAs("Results", output + titleOrig + "/Channel " + j + "/results-" + titleOrig + "-dup-Ch" + j + ".csv");  
 		close("Results");
-		saveAs("Tiff", output + titleOrig + "/Channel " + j + "/segimage-" + titleOrig + "-dup-Ch" + j + ".tif");
-		close(output + titleOrig + "/Channel " + j + "/segimage-dup-Ch" + j + ".tif"); // this is probably redundant w BM = true
+		saveAs("Tiff", output + titleOrig + "/Channel " + j + "/ch" + j + "_" + titleOrig + "_segimage.tif");
+		close(output + titleOrig + "/Channel " + j + "/ch" + j + "_" + titleOrig + "_segimage.tif"); // this is probably redundant w BM = true
 	}
 	
 	if(endsWith(input, File.separator)) {
