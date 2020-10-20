@@ -1,0 +1,26 @@
+// compute image concordance between MATLAB and Briscoe unmixed images
+// macro description: "outputs to the Log-window the percentage of image area that is identical in both images"
+// macro accessed from https://forum.image.sc/t/comparing-two-images-concordance/19997/4
+// date: 20/10/20
+// user: sophia swartz, author: herbie on image.sc 
+
+requires( "1.52g" );
+n = nImages;
+if (n!=2) exit("Two images need to be open.");
+setBatchMode(true);
+selectImage(1);
+img1 = getTitle;
+selectImage(2);
+img2 = getTitle;
+imageCalculator( "Difference create", img1, img2 );
+run("8-bit");
+changeValues(1, 255, 255);
+run("Create Selection");
+List.setMeasurements;
+percent = List.getValue("Area")*100/(getWidth()*getHeight());
+close();
+print("Percentage identical: "+ d2s(percent, 6) );
+setBatchMode(false);
+exit();
+
+// macro outputs a percent identity (0.000 to 100.000) of identical pixels 
